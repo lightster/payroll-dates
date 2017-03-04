@@ -16,23 +16,22 @@ var module = function() {
         var payrollStartsOnTs = payrollStartsOn.getTime() / 1000;
         var startDateTs = startDate.getTime() / 1000;
 
-        if (payrollStartsOnTs <= startDateTs) {
-          var diff = startDateTs - payrollStartsOnTs;
-          var remainder = diff % periodLength;
-          var firstStep = (0 === remainder ? 0 : periodLength);
-          var firstDateTs = startDateTs - remainder + firstStep;
-
-          for (var i = 0; i < count; i++) {
-            dates.push(new Date((firstDateTs + periodLength * i) * 1000));
+        var getFirstDateTimestamp = function() {
+          if (payrollStartsOnTs <= startDateTs) {
+            var diff = startDateTs - payrollStartsOnTs;
+            var remainder = diff % periodLength;
+            var firstStep = (0 === remainder ? 0 : periodLength);
+            return startDateTs - remainder + firstStep;
           }
-        } else {
+
           var diff = payrollStartsOnTs - startDateTs;
           var remainder = diff % periodLength;
-          var firstDateTs = startDateTs + remainder;
+          return firstDateTs = startDateTs + remainder;
+        };
 
-          for (var i = 0; i < count; i++) {
-            dates.push(new Date((firstDateTs + periodLength * i) * 1000));
-          }
+        var firstDateTs = getFirstDateTimestamp();
+        for (var i = 0; i < count; i++) {
+          dates.push(new Date((firstDateTs + periodLength * i) * 1000));
         }
       }
 
