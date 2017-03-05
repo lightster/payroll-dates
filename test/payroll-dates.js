@@ -5,7 +5,7 @@ requirejs.config({
   baseUrl: 'src',
 });
 
-test('calculate every 2 weeks next payroll dates', function(t) {
+test('calculate weekly payroll dates', function(t) {
   t.plan(1);
 
   var payrollDates = requirejs('payroll-dates');
@@ -26,7 +26,7 @@ test('calculate every 2 weeks next payroll dates', function(t) {
   );
 });
 
-test('calculate every 2 weeks next historical payroll dates', function(t) {
+test('calculate weekly historical payroll dates', function(t) {
   t.plan(1);
 
   var payrollDates = requirejs('payroll-dates');
@@ -46,4 +46,20 @@ test('calculate every 2 weeks next historical payroll dates', function(t) {
       (new Date('2016-06-01')),
     ]
   );
+
+  test('calculate weekly payroll dates relative to today', function(t) {
+    t.plan(1);
+
+    var payrollDates = requirejs('payroll-dates');
+    var paySchedule = payrollDates({
+      repeats: 'weekly',
+      repeatEvery: 2,
+      startsOn: '2016-10-19',
+    });
+
+    t.deepEqual(
+      paySchedule.next(4),
+      paySchedule.next(4, new Date())
+    );
+  });
 });
