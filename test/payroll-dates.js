@@ -46,20 +46,20 @@ test('calculate weekly historical payroll dates', function(t) {
       (new Date('2016-06-01')),
     ]
   );
+});
 
-  test('calculate weekly payroll dates relative to today', function(t) {
-    t.plan(1);
+test('calculate weekly payroll dates relative to today', function(t) {
+  t.plan(1);
 
-    var payrollDates = requirejs('payroll-dates');
-    var paySchedule = payrollDates({
-      repeats: 'weekly',
-      repeatEvery: 2,
-      startsOn: '2016-10-19',
-    });
-
-    t.deepEqual(
-      paySchedule.next(4),
-      paySchedule.next(4, new Date())
-    );
+  var payrollDates = requirejs('payroll-dates');
+  var paySchedule = payrollDates({
+    repeats: 'weekly',
+    repeatEvery: 2,
+    startsOn: '2016-10-19',
   });
+
+  t.deepEqual(
+    paySchedule.next(4),
+    paySchedule.next(4, new Date())
+  );
 });
