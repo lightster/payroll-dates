@@ -63,3 +63,59 @@ test('calculate weekly payroll dates relative to today', function(t) {
     paySchedule.next(4, new Date())
   );
 });
+
+test('calculate monthly payroll dates', function(t) {
+  t.plan(1);
+
+  var payrollDates = requirejs('payroll-dates');
+  var paySchedule = payrollDates({
+    repeats: 'monthly',
+    dates: [1, 15],
+  });
+
+  t.deepEqual(
+    paySchedule.next(4, '2017-02-20'),
+    [
+      (new Date(2017, 3 - 1, 1)),
+      (new Date(2017, 3 - 1, 15)),
+      (new Date(2017, 4 - 1, 1)),
+      (new Date(2017, 4 - 1, 15)),
+    ]
+  );
+});
+
+test('calculate monthly historical payroll dates', function(t) {
+  t.plan(1);
+
+  var payrollDates = requirejs('payroll-dates');
+  var paySchedule = payrollDates({
+    repeats: 'monthly',
+    dates: [1, 16],
+  });
+
+  t.deepEqual(
+    paySchedule.next(5, '2016-11-04'),
+    [
+      (new Date(2016, 11 - 1, 16)),
+      (new Date(2016, 12 - 1, 1)),
+      (new Date(2016, 12 - 1, 16)),
+      (new Date(2017, 1 - 1, 1)),
+      (new Date(2017, 1 - 1, 16)),
+    ]
+  );
+});
+
+test('calculate monthly payroll dates relative to today', function(t) {
+  t.plan(1);
+
+  var payrollDates = requirejs('payroll-dates');
+  var paySchedule = payrollDates({
+    repeats: 'monthly',
+    dates: [2, 17],
+  });
+
+  t.deepEqual(
+    paySchedule.next(4),
+    paySchedule.next(4, new Date())
+  );
+});

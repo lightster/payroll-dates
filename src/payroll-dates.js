@@ -33,6 +33,37 @@ var module = function() {
         for (var i = 0; i < count; i++) {
           dates.push(new Date((firstDateTs + periodLength * i) * 1000));
         }
+      } else if ('monthly' === this.config.repeats) {
+        var dateIndex;
+        var year = startDate.getFullYear();
+        var month = startDate.getMonth();
+        var date = startDate.getDate();
+        var datesConfig = this.config.dates;
+
+        var normalize = function() {
+          if (dateIndex >= datesConfig.length) {
+            dateIndex = 0;
+            ++month;
+            if (month >= 12) { // month is zero-based, 0-11, so 12 is January
+              month = 0;
+              ++year;
+            }
+          }
+        };
+
+        for (dateIndex = 0; dateIndex < datesConfig.length; dateIndex++) {
+          if (date <= datesConfig[dateIndex]) {
+            break;
+          }
+        }
+        normalize();
+
+        for (var i = 0; i < count; i++) {
+          dates.push(new Date(year, month, datesConfig[dateIndex], 0, 0, 0));
+
+          ++dateIndex;
+          normalize();
+        }
       }
 
       return dates;
