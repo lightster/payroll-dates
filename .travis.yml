@@ -4,3 +4,14 @@ node_js:
   - 6
   - 5
   - 4
+before_deploy:
+ - yarn build
+deploy:
+  provider: releases
+  api_key:
+    secure: kh3ApRJC/tPzKWM3W8KYJKBeF8PL8VR977t2klJcxHgJugLQtXD7Zd9+mW0DchHyWjxtjXN8I//Uigeb4FWtn8pyG0dm0K5SzQ//PZ7EvN5Yrb2zh2+a0/og/UhnBEcoIvLLLhYs94ZQPkLW0i6Cjz68eWW7GGZ9ptYXllq4mMUVrZEIaieuUKu9tUrs04A+h+7maYIaZgJkpgYewV0kZgze0hr2RiD9guWEGqgYAR+6dgLC4iJVQuJPuMDZVM0fz5t/3DcsgXjgVEj0c+zIV4CkMyysaoSD5/csaG+IW4Xr9SxES7basHANc7YzmXpf6mgAdWEYantsaQ0aDnR5slwdFVZXwCrQXh7T462jLRfQoEUfqpFE4YtioLo6ynGCY6/bf2/GPepSiRszrDmSSSv+T6zEbxTbMtFCAFA5AuTFmV6mH5X0NqPgd574u3LFLD/AoDaWzo754o37+FYB9haeLSnYnWQkrnnASA33twZ4snAOaqE7MwrKTo0lqgXqyT11oyJar1lvRD1Yw3I/rko9yi6xm0l0rISlRxGAbdPmX6ztjNnoU2/nvhYJ/ByispQ4ozB+3E0PNp4bAnL+CTTja4o9U6AWGH1TPxjxWUAHXxeElKPqbEcJHk4EK+XD6h4SeN7CuyEYfQPpvaCJAdP6s3VXvzacMVrq190qqdw=
+  file:
+    - dist/payroll-dates.min.js
+  skip_cleanup: true
+  on:
+    tags: true
