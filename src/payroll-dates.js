@@ -1,4 +1,12 @@
 var module = function() {
+  var adjustWeekendToClosestWeekday = function(payDate) {
+    if (payDate.getDay() === 0) { // Sunday -> Monday
+      payDate.setDate(payDate.getDate() + 1);
+    } else if (payDate.getDay() === 6) { // Saturday -> Friday
+      payDate.setDate(payDate.getDate() - 1);
+    }
+  };
+
   var PayrollDates = {
     init: function(config) {
       this.config = config;
@@ -59,7 +67,12 @@ var module = function() {
         normalize();
 
         for (var i = 0; i < count; i++) {
-          dates.push(new Date(year, month, datesConfig[dateIndex], 0, 0, 0));
+          var payDate = new Date(year, month, datesConfig[dateIndex], 0, 0, 0);
+          if (this.config.weekendAdjustment === 'closest') {
+            adjustWeekendToClosestWeekday(payDate);
+          }
+
+          dates.push(payDate);
 
           ++dateIndex;
           normalize();
