@@ -4,6 +4,10 @@ node_js:
   - 6
   - 5
   - 4
+cache:
+  yarn: true
+  directories:
+    - node_modules
 before_deploy:
  - yarn build
 deploy:
