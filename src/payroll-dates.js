@@ -1,9 +1,20 @@
 var module = function() {
-  var adjustWeekendToClosestWeekday = function(payDate) {
-    if (payDate.getDay() === 0) { // Sunday -> Monday
-      payDate.setDate(payDate.getDate() + 1);
-    } else if (payDate.getDay() === 6) { // Saturday -> Friday
-      payDate.setDate(payDate.getDate() - 1);
+  var adjustDate = function(payDate) {
+    if (this.config.weekendAdjustment === 'closest') {
+      return adjustWeekend(payDate, -1, 1);
+    }
+    if (this.config.weekendAdjustment === 'previous') {
+      return adjustWeekend(payDate, -1, -2);
+    }
+    if (this.config.weekendAdjustment === 'next') {
+      return adjustWeekend(payDate, 2, 1);
+    }
+  };
+  var adjustWeekend = function(payDate, saturdayAdjustment, sundayAdjustment) {
+    if (payDate.getDay() === 0) {
+      payDate.setDate(payDate.getDate() + sundayAdjustment);
+    } else if (payDate.getDay() === 6) {
+      payDate.setDate(payDate.getDate() + saturdayAdjustment);
     }
   };
 
@@ -68,9 +79,7 @@ var module = function() {
 
         for (var i = 0; i < count; i++) {
           var payDate = new Date(year, month, datesConfig[dateIndex], 0, 0, 0);
-          if (this.config.weekendAdjustment === 'closest') {
-            adjustWeekendToClosestWeekday(payDate);
-          }
+          adjustDate.call(this, payDate);
 
           dates.push(payDate);
 
