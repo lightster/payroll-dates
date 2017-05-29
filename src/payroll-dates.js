@@ -1,34 +1,20 @@
 var module = function() {
   var adjustDate = function(payDate) {
     if (this.config.weekendAdjustment === 'closest') {
-      return adjustWeekendToClosestWeekday(payDate);
+      return adjustWeekend(payDate, -1, 1);
     }
     if (this.config.weekendAdjustment === 'previous') {
-      return adjustWeekendToPreviousWeekday(payDate);
+      return adjustWeekend(payDate, -1, -2);
     }
     if (this.config.weekendAdjustment === 'next') {
-      return adjustWeekendToNextWeekday(payDate);
+      return adjustWeekend(payDate, 2, 1);
     }
   };
-  var adjustWeekendToClosestWeekday = function(payDate) {
-    if (payDate.getDay() === 0) { // Sunday -> Monday
-      payDate.setDate(payDate.getDate() + 1);
-    } else if (payDate.getDay() === 6) { // Saturday -> Friday
-      payDate.setDate(payDate.getDate() - 1);
-    }
-  };
-  var adjustWeekendToPreviousWeekday = function(payDate) {
-    if (payDate.getDay() === 0) { // Sunday -> Friday
-      payDate.setDate(payDate.getDate() - 2);
-    } else if (payDate.getDay() === 6) { // Saturday -> Friday
-      payDate.setDate(payDate.getDate() - 1);
-    }
-  };
-  var adjustWeekendToNextWeekday = function(payDate) {
-    if (payDate.getDay() === 0) { // Sunday -> Monday
-      payDate.setDate(payDate.getDate() + 1);
-    } else if (payDate.getDay() === 6) { // Saturday -> Monday
-      payDate.setDate(payDate.getDate() + 2);
+  var adjustWeekend = function(payDate, saturdayAdjustment, sundayAdjustment) {
+    if (payDate.getDay() === 0) {
+      payDate.setDate(payDate.getDate() + sundayAdjustment);
+    } else if (payDate.getDay() === 6) {
+      payDate.setDate(payDate.getDate() + saturdayAdjustment);
     }
   };
 
